@@ -1,0 +1,52 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Portal.gd" type="Script" id=1]
+[ext_resource path="res://portal1.png" type="Texture" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 17.1401, 48.0742 )
+
+[sub_resource type="Gradient" id=2]
+colors = PoolColorArray( 0.796875, 0, 0, 1, 0, 0, 0, 0 )
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
+width = 256
+
+[sub_resource type="ParticlesMaterial" id=4]
+emission_shape = 2
+emission_box_extents = Vector3( 32, 5, 1 )
+flag_disable_z = true
+gravity = Vector3( 0, 36, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+radial_accel = -2.5
+damping = 1.5
+scale = 1.5
+color_ramp = SubResource( 3 )
+
+[node name="Portal1" type="Area2D"]
+position = Vector2( 285.387, -5.55948 )
+monitorable = false
+script = ExtResource( 1 )
+
+[node name="VisibilityEnabler2D" type="VisibilityEnabler2D" parent="."]
+position = Vector2( 1.69043, -1.69045 )
+scale = Vector2( 5.41057, 6.67073 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+
+[node name="Area2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Particles2D" type="Particles2D" parent="."]
+position = Vector2( 0, 45.5595 )
+rotation = 3.14159
+amount = 128
+lifetime = 2.5
+preprocess = 2.0
+process_material = SubResource( 4 )
+
+[connection signal="body_entered" from="." to="." method="_on_Portal1_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_Portal1_body_exited"]

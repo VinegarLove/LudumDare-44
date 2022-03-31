@@ -1,0 +1,86 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Enemy1.gd" type="Script" id=1]
+[ext_resource path="res://chara_atlas.png" type="Texture" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 56, 32 )
+
+[sub_resource type="CapsuleShape2D" id=2]
+radius = 8.0
+height = 0.0
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 48, 48, 16 )
+
+[sub_resource type="Animation" id=4]
+length = 0.5
+tracks/0/type = "method"
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.3 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "check_attacking_collission"
+} ]
+}
+
+[sub_resource type="Animation" id=5]
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( -0.00170891, 0.997148 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=6]
+
+[sub_resource type="Animation" id=7]
+
+[sub_resource type="Animation" id=8]
+
+[node name="Enemy1" type="Area2D"]
+position = Vector2( 520, 920 )
+collision_layer = 2
+collision_mask = 0
+
+[node name="VisibilityEnabler2D" type="VisibilityEnabler2D" parent="."]
+position = Vector2( -7.62939e-06, -9.53674e-06 )
+scale = Vector2( 15.2, 8.18462 )
+
+[node name="ChaseShape" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="EnemyBody" type="KinematicBody2D" parent="."]
+modulate = Color( 1, 1, 1, 0.998289 )
+collision_mask = 3
+script = ExtResource( 1 )
+looking_time = 0.5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyBody"]
+shape = SubResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="EnemyBody"]
+texture = SubResource( 3 )
+hframes = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="EnemyBody"]
+anims/attack = SubResource( 4 )
+anims/death = SubResource( 5 )
+anims/go_back_to_start = SubResource( 6 )
+anims/idle = SubResource( 7 )
+anims/looking_player = SubResource( 8 )
+
+[connection signal="body_exited" from="." to="EnemyBody" method="_on_exit_chase_area"]
